@@ -1,0 +1,27 @@
+services:
+  database:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: igym
+    ports:
+      - '3306:3306'
+
+  api:
+    build: .
+    command: npm run start:dev
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: development
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: igym
+    depends_on:
+      - database
+    volumes:
+      - ./src:/app/src
